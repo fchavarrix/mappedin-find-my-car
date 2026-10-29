@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b1220" />
+    <title>Find My Car · Mappedin demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" />
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo">P</span>
+        <div>
+          <strong>Find My Car</strong>
+          <small>Indoor wayfinding demo · Mappedin JS</small>
+        </div>
+      </div>
+      <select id="floor" aria-label="Floor"></select>
+    </header>
+
+    <section class="sheet" id="sheet">
+      <div class="steps" id="steps">
+        <span data-step="park">1 · Park</span>
+        <span data-step="start">2 · You are here</span>
+        <span data-step="go">3 · Go</span>
+      </div>
+      <h1 id="title">Loading map…</h1>
+      <p id="message"></p>
+      <ol id="instructions" class="instructions" hidden></ol>
+      <div class="actions" id="actions"></div>
+      <p class="credit">Demo map and SDK by Mappedin · built by Felipe Chavarri</p>
+    </section>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

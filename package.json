@@ -1,0 +1,23 @@
+{
+  "name": "mappedin-find-my-car",
+  "version": "1.0.0",
+  "description": "Find My Car: indoor wayfinding demo with Mappedin JS and a simulated Blue Dot",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@mappedin/blue-dot": "^6.30.0-beta.0",
+    "@mappedin/mappedin-js": "^6.30.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
+  },
+  "private": true
+}
