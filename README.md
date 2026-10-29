@@ -2,7 +2,7 @@
 
 A small web app that solves an everyday problem in malls, campuses and office parks: **finding your car again**.
 
-**▶ Live demo: https://fchavarrix.github.io/mappedin-find-my-car/**
+**▶ Live demo:** [English](https://fchavarrix.github.io/mappedin-find-my-car/?lang=en) · [Español](https://fchavarrix.github.io/mappedin-find-my-car/)
 
 1. **Park:** tap the map where you left your car (it is saved in the browser).
 2. **You are here:** tap your current location, on any building or floor.
@@ -15,6 +15,7 @@ Built on [Mappedin JS v6](https://developer.mappedin.com/web-sdk/getting-started
 - **Multi-building, multi-floor routing.** A route from an office on Level 2 to a car on parking level P3 goes down an elevator, outdoors and into the garage, changing floors on the way.
 - **Automatic floor switching.** When the Blue Dot's position moves to another level, Mappedin does not change the visible floor on its own. I found this in a real Blue Dot pilot at a mall in Lima. This app watches the route and switches floors when the user takes the elevator or stairs, so the map is always on the floor where the user is.
 - **A positioning seam ready for a real IPS.** The simulated position goes through one function (`placeBlueDot`). In production that function would receive positions from Wi-Fi RTT, BLE or VPS through `blueDot.reportPosition`.
+- **Spanish and English.** Spanish by default for Latin American venues; `?lang=en` or the language button switches to English.
 - **Mobile first.** It is designed for one-hand use on a phone; the floor selector is grouped by building.
 
 ## Run it

@@ -10,6 +10,7 @@ import {
 import { BlueDot } from '@mappedin/blue-dot';
 import '@mappedin/mappedin-js/lib/index.css';
 import './style.css';
+import { lang, placeName, switchLang, t } from './i18n';
 
 // Public demo credentials from Mappedin's developer docs (they only work with demo maps).
 // Default map: Mappedin's "Parking Demo". Any other demo map can be loaded with ?map=<mapId>.
@@ -70,8 +71,8 @@ function saveSpot(spot: SavedSpot | undefined) {
 
 function floorName(floorId: string | undefined) {
   const floor = mapData.getByType('floor').find((f) => f.id === floorId);
-  if (!floor) return 'this floor';
-  return floor.floorStack.type === 'Outdoor' ? 'the outdoor area' : `${floor.floorStack.name} · ${floor.name}`;
+  if (!floor) return t.thisFloor;
+  return floor.floorStack.type === 'Outdoor' ? t.outdoor : `${placeName(floor.floorStack.name)} · ${placeName(floor.name)}`;
 }
 
 function setCar(coordinate: Coordinate | undefined) {
@@ -120,31 +121,31 @@ function render() {
 
   switch (mode) {
     case 'park':
-      ui.title.textContent = 'Where did you park?';
-      ui.message.textContent = 'Tap the map where you left your car. Use the floor selector to change levels.';
+      ui.title.textContent = t.parkTitle;
+      ui.message.textContent = t.parkMessage;
       break;
     case 'start':
-      ui.title.textContent = 'Where are you now?';
-      ui.message.textContent = `Car saved on ${floorName(car?.floorId)}. Now tap your current location, on any floor.`;
-      ui.actions.append(button('Change parking spot', resetAll));
+      ui.title.textContent = t.startTitle;
+      ui.message.textContent = t.startMessage(floorName(car?.floorId));
+      ui.actions.append(button(t.changeSpot, resetAll));
       break;
     case 'ready':
-      ui.title.textContent = 'Route to your car';
+      ui.title.textContent = t.routeTitle;
       ui.message.textContent = directions
-        ? `${Math.round(directions.distance)} m · about ${Math.max(1, Math.round(directions.distance / 1.3 / 60))} min walking`
-        : 'No route found between these two points. Try another spot.';
-      if (directions) ui.actions.append(button('Take me to my car', walk, true));
-      ui.actions.append(button('Change start', () => setMode('start')));
+        ? t.routeMessage(Math.round(directions.distance), Math.max(1, Math.round(directions.distance / 1.3 / 60)))
+        : t.noRoute;
+      if (directions) ui.actions.append(button(t.takeMe, walk, true));
+      ui.actions.append(button(t.changeStart, () => setMode('start')));
       break;
     case 'walking':
-      ui.title.textContent = 'Walking to your car…';
-      ui.message.textContent = 'Simulated Blue Dot. The map switches floors on its own when you take the elevator or stairs.';
-      ui.actions.append(button('Stop', () => { walkToken++; setMode('ready'); }));
+      ui.title.textContent = t.walkingTitle;
+      ui.message.textContent = t.walkingMessage;
+      ui.actions.append(button(t.stop, () => { walkToken++; setMode('ready'); }));
       break;
     case 'arrived':
-      ui.title.textContent = 'You found your car';
-      ui.message.textContent = 'Have a safe drive home.';
-      ui.actions.append(button('Start over', resetAll, true));
+      ui.title.textContent = t.arrivedTitle;
+      ui.message.textContent = t.arrivedMessage;
+      ui.actions.append(button(t.startOver, resetAll, true));
       break;
   }
 }
@@ -167,13 +168,12 @@ function resetAll() {
 
 function describe(instruction: TDirectionInstruction) {
   const { type, bearing } = instruction.action;
-  const turn = (bearing ?? '').replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
   switch (type) {
-    case 'Departure': return 'Start walking';
-    case 'Arrival': return 'Arrive at your car';
-    case 'TakeConnection': return 'Take the elevator or stairs';
-    case 'ExitConnection': return 'Exit on the new floor';
-    default: return bearing === 'Straight' ? 'Continue straight' : `Turn ${turn}`;
+    case 'Departure': return t.departure;
+    case 'Arrival': return t.arrival;
+    case 'TakeConnection': return t.takeConnection;
+    case 'ExitConnection': return t.exitConnection;
+    default: return bearing === 'Straight' ? t.straight : (t.turn[bearing ?? ''] ?? t.turnFallback);
   }
 }
 
@@ -269,6 +269,20 @@ async function walk() {
   setMode('arrived');
 }
 
+// Static labels; the sheet's dynamic text comes from render().
+function applyStaticText() {
+  document.documentElement.lang = lang;
+  $('subtitle').textContent = t.subtitle;
+  ui.floor.setAttribute('aria-label', t.floor);
+  const labels: Record<string, string> = { park: t.stepPark, start: t.stepStart, go: t.stepGo };
+  ui.steps.querySelectorAll('span').forEach((s) => (s.textContent = labels[s.dataset.step!]));
+  ui.title.textContent = t.loading;
+  $('credit').textContent = t.credit;
+  const langButton = $<HTMLButtonElement>('lang');
+  langButton.textContent = t.switchTo;
+  langButton.addEventListener('click', switchLang);
+}
+
 async function init() {
   mapData = await getMapData(MAP_OPTIONS);
   // Open on the parking garage when the map has one; otherwise use the map's default floor.
@@ -291,9 +305,9 @@ async function init() {
       .filter((stack) => stack.floors.some(hasGeometry))
       .map((stack) => {
         const group = document.createElement('optgroup');
-        group.label = stack.name;
+        group.label = placeName(stack.name);
         const sorted = stack.floors.filter(hasGeometry).sort((a, b) => a.elevation - b.elevation);
-        group.append(...sorted.map((f) => new Option(f.name, f.id)));
+        group.append(...sorted.map((f) => new Option(placeName(f.name), f.id)));
         return group;
       }),
   );
@@ -333,8 +347,9 @@ async function init() {
   render();
 }
 
+applyStaticText();
 init().catch((err) => {
   console.error(err);
-  ui.title.textContent = 'The map could not load';
-  ui.message.textContent = 'Check your connection and reload the page.';
+  ui.title.textContent = t.loadErrorTitle;
+  ui.message.textContent = t.loadErrorMessage;
 });

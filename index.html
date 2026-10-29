@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -16,23 +16,26 @@
         <span class="logo">P</span>
         <div>
           <strong>Find My Car</strong>
-          <small>Indoor wayfinding demo · Mappedin JS</small>
+          <small id="subtitle"></small>
         </div>
       </div>
-      <select id="floor" aria-label="Floor"></select>
+      <div class="controls">
+        <select id="floor"></select>
+        <button id="lang" class="lang" type="button"></button>
+      </div>
     </header>
 
     <section class="sheet" id="sheet">
       <div class="steps" id="steps">
-        <span data-step="park">1 · Park</span>
-        <span data-step="start">2 · You are here</span>
-        <span data-step="go">3 · Go</span>
+        <span data-step="park"></span>
+        <span data-step="start"></span>
+        <span data-step="go"></span>
       </div>
-      <h1 id="title">Loading map…</h1>
+      <h1 id="title"></h1>
       <p id="message"></p>
       <ol id="instructions" class="instructions" hidden></ol>
       <div class="actions" id="actions"></div>
-      <p class="credit">Demo map and SDK by Mappedin · built by Felipe Chavarri</p>
+      <p class="credit" id="credit"></p>
     </section>
 
     <script type="module" src="/src/main.ts"></script>
