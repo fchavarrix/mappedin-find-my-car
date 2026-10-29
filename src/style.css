@@ -41,8 +41,9 @@ html, body {
   z-index: 10;
 }
 
-.brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.brand strong { display: block; font-size: 15px; }
+.brand { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; overflow: hidden; }
+.brand > div { min-width: 0; }
+.brand strong { display: block; font-size: 15px; white-space: nowrap; }
 .brand small { display: block; color: var(--muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .logo {
@@ -152,3 +153,7 @@ button:disabled { opacity: 0.5; cursor: default; }
 .controls { display: flex; align-items: center; gap: 6px; flex: none; }
 .controls select { max-width: 150px; }
 button.lang { padding: 8px 10px; font-size: 12px; border-radius: 10px; border: 1px solid var(--line); background: #fff; }
+
+@media (max-width: 420px) {
+  .controls select { max-width: 96px; }
+}

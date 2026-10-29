@@ -191,11 +191,40 @@ function renderInstructions(active = -1) {
   );
 }
 
+// A tap can land outside the walkable area (a wall, a parking stall, outside the building).
+// Then there is no route, so try the closest spaces on the same floor instead.
+function candidates(coordinate: Coordinate) {
+  const floor = mapData.getByType('floor').find((f) => f.id === coordinate.floorId);
+  const nearest = (floor?.spaces ?? [])
+    .map((space) => ({ space, d: metres(coordinate, space.center) }))
+    .sort((a, b) => a.d - b.d)
+    .slice(0, 4)
+    .map(({ space }) => space.center);
+  return [coordinate, ...nearest];
+}
+
+async function findDirections(from: Coordinate, to: Coordinate) {
+  for (const a of candidates(from)) {
+    for (const b of candidates(to)) {
+      const found = await mapData.getDirections(a, b);
+      if (found) return found;
+    }
+  }
+  return undefined;
+}
+
 async function route() {
   if (!start || !car) return;
   mapView.Navigation.clear();
-  directions = await mapData.getDirections(start, car);
+  directions = await findDirections(start, car);
   if (directions) {
+    // Snap the Blue Dot and the car to where the route actually starts and ends.
+    const points = directions.coordinates;
+    start = points[0];
+    placeBlueDot(start);
+    if (metres(points[points.length - 1], car) > 1 || points[points.length - 1].floorId !== car.floorId) {
+      setCar(points[points.length - 1]);
+    }
     mapView.Navigation.draw(directions, {
       pathOptions: { color: '#2266ff', width: 1.2, displayArrowsOnPath: true },
     });
