@@ -228,13 +228,19 @@ async function walk() {
   let instructionIndex = 0;
   renderInstructions(0);
 
+  // Track the walk's floor ourselves: mapView.currentFloor only updates once the floor
+  // change has finished, so checking it here would treat every point as a new floor.
+  let walkFloorId = points[0]?.floorId;
+  if (walkFloorId && walkFloorId !== mapView.currentFloor.id) mapView.setFloor(walkFloorId);
+
   for (let i = 0; i < points.length - 1; i++) {
     const a = points[i];
     const b = points[i + 1];
 
-    if (b.floorId && b.floorId !== mapView.currentFloor.id) {
+    if (b.floorId && b.floorId !== walkFloorId) {
       await sleep(FLOOR_CHANGE_PAUSE_MS);
       if (token !== walkToken) return;
+      walkFloorId = b.floorId;
       mapView.setFloor(b.floorId);
       placeBlueDot(b);
       continue;
