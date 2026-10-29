@@ -155,5 +155,7 @@ button:disabled { opacity: 0.5; cursor: default; }
 button.lang { padding: 8px 10px; font-size: 12px; border-radius: 10px; border: 1px solid var(--line); background: #fff; }
 
 @media (max-width: 420px) {
-  .controls select { max-width: 96px; }
+  .controls select { max-width: 82px; }
+  .brand strong { font-size: 14px; text-overflow: ellipsis; overflow: hidden; }
+  .topbar { gap: 8px; }
 }

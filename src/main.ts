@@ -307,6 +307,8 @@ async function walk() {
 // Static labels; the sheet's dynamic text comes from render().
 function applyStaticText() {
   document.documentElement.lang = lang;
+  document.title = `${t.appName} · Mappedin demo`;
+  $('app-name').textContent = t.appName;
   $('subtitle').textContent = t.subtitle;
   ui.floor.setAttribute('aria-label', t.floor);
   const labels: Record<string, string> = { park: t.stepPark, start: t.stepStart, go: t.stepGo };

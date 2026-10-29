@@ -4,6 +4,7 @@ const LANG_KEY = 'find-my-car:lang';
 
 const strings = {
   es: {
+    appName: 'Encuentra tu auto',
     subtitle: 'Demo de navegación en interiores · Mappedin JS',
     floor: 'Piso',
     stepPark: '1 · Estaciona',
@@ -47,6 +48,7 @@ const strings = {
     switchTo: 'EN',
   },
   en: {
+    appName: 'Find My Car',
     subtitle: 'Indoor wayfinding demo · Mappedin JS',
     floor: 'Floor',
     stepPark: '1 · Park',
