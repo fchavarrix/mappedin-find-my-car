@@ -2,7 +2,7 @@
 
 A small web app that solves an everyday problem in malls, campuses and office parks: **finding your car again**.
 
-**▶ Live demo:** [English](https://fchavarrix.github.io/mappedin-find-my-car/?lang=en) · [Español](https://fchavarrix.github.io/mappedin-find-my-car/)
+**▶ Live demo:** [English](https://demo.atlas-lac.com/encuentra-tu-auto/?lang=en) · [Español](https://demo.atlas-lac.com/encuentra-tu-auto/)
 
 1. **Park:** tap the map where you left your car (it is saved in the browser).
 2. **You are here:** tap your current location, on any building or floor.
