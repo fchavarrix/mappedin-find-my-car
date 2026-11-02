@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 
-// GitHub Pages serves the site from /<repo-name>/.
+// Served from its own subdomain (find-my-car-demo.atlas-lac.com), so assets live at the root.
 export default defineConfig({
-  base: process.env.GITHUB_ACTIONS ? '/mappedin-find-my-car/' : '/',
+  base: '/',
 });
